@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, NavLink } from 'react-router-dom';
 import './Navigation.css';
 
 function Navigation() {
@@ -26,64 +26,85 @@ function Navigation() {
         </ul>
       </Route>
       <Route path='/movies'>
-        <ul className='navigation__list'>
+        <ul className='navigation__list navigation__list_logged'>
           <li className='navigation__item'>
-            <Link
+            <NavLink
               to='/movies'
-              className='navigation__link navigation__link_type_films navigation__link_active'>
+              className='navigation__link navigation__link_type_films'
+              activeClassName='navigation__link_active'>
               Фильмы
-            </Link>
+            </NavLink>
           </li>
           <li className='navigation__item'>
-            <Link to='/saved-movies' className='navigation__link navigation__link_type_saved-films'>
+            <NavLink
+              to='/saved-movies'
+              className='navigation__link navigation__link_type_saved-films'
+              activeClassName='navigation__link_active'>
               Сохранённые фильмы
-            </Link>
+            </NavLink>
           </li>
           <li className='navigation__item'>
-            <Link to='/profile' className='navigation__link navigation__link_type_account'>
+            <NavLink
+              to='/profile'
+              className='navigation__link navigation__link_type_account'
+              activeClassName='navigation__link_active'>
               Аккаунт
-            </Link>
+            </NavLink>
           </li>
         </ul>
         <button onClick={onClickMenu} className='navigation__burger-button'>
           <span></span>
         </button>
-        {isMenuOpened ? (
-          <>
-            <div className='navigation__background'></div>
-            <div className='navigation__container'>
-              <button className='navigation__cross-button' onClick={onClickMenu}>
-                &#x2716;
-              </button>
-              <ul className='navigation__menu'>
-                <li className='navigation__item'>
-                  <Link to='/' className='navigation__link navigation__link_type_menu'>
-                    Главная
-                  </Link>
-                </li>
-                <li className='navigation__item'>
-                  <Link to='/movies' className='navigation__link navigation__link_type_menu'>
-                    Фильмы
-                  </Link>
-                </li>
-                <li className='navigation__item'>
-                  <Link to='/saved-movies' className='navigation__link navigation__link_type_menu'>
-                    Сохранённые фильмы
-                  </Link>
-                </li>
-                <li className='navigation__item navigation__item_type_account'>
-                  <Link
-                    to='/saved-movies'
-                    className='navigation__link navigation__link_type_account'>
-                    Аккаунт
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </>
-        ) : (
+        {/* {isMenuOpened ? ( */}
+        <>
+          <div
+            className={`navigation__background navigation__background_${
+              isMenuOpened ? 'visible' : 'hidden'
+            }`}></div>
+          <div
+            className={`navigation__container navigation__container_${
+              isMenuOpened ? 'visible' : 'hidden'
+            }`}>
+            <button className='navigation__cross-button' onClick={onClickMenu}>
+              &#x2716;
+            </button>
+            <ul className='navigation__menu'>
+              <li className='navigation__item'>
+                <NavLink
+                  exact
+                  to='/'
+                  className='navigation__link navigation__link_type_menu'
+                  activeClassName='navigation__menu-link_active'>
+                  Главная
+                </NavLink>
+              </li>
+              <li className='navigation__item'>
+                <NavLink
+                  to='/movies'
+                  className='navigation__link navigation__link_type_menu'
+                  activeClassName='navigation__menu-link_active'>
+                  Фильмы
+                </NavLink>
+              </li>
+              <li className='navigation__item'>
+                <NavLink
+                  to='/saved-movies'
+                  className='navigation__link navigation__link_type_menu'
+                  activeClassName='navigation__menu-link_active'>
+                  Сохранённые фильмы
+                </NavLink>
+              </li>
+              <li className='navigation__item navigation__item_type_account'>
+                <Link to='/profile' className='navigation__link navigation__link_type_account'>
+                  Аккаунт
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </>
+        {/* ) : (
           ''
-        )}
+        )} */}
       </Route>
     </nav>
   );

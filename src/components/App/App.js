@@ -3,9 +3,9 @@ import { Switch, Route } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
+import Movies from '../Movies/Movies';
 // import Register from '../Register';
 // import Login from '../Login';
-// import Movies from '../Movies';
 // import SavedMovies from '../SavedMovies';
 
 import './App.css';
@@ -17,6 +17,9 @@ function App() {
       <Switch>
         <Route exact path='/'>
           <Main />
+        </Route>
+        <Route path='/movies'>
+          <Movies />
         </Route>
       </Switch>
       <Footer />

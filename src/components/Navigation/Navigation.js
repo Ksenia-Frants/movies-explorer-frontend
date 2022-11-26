@@ -55,56 +55,51 @@ function Navigation() {
         <button onClick={onClickMenu} className='navigation__burger-button'>
           <span></span>
         </button>
-        {/* {isMenuOpened ? ( */}
-        <>
-          <div
-            className={`navigation__background navigation__background_${
-              isMenuOpened ? 'visible' : 'hidden'
-            }`}></div>
-          <div
-            className={`navigation__container navigation__container_${
-              isMenuOpened ? 'visible' : 'hidden'
-            }`}>
-            <button className='navigation__cross-button' onClick={onClickMenu}>
-              &#x2716;
-            </button>
-            <ul className='navigation__menu'>
-              <li className='navigation__item'>
-                <NavLink
-                  exact
-                  to='/'
-                  className='navigation__link navigation__link_type_menu'
-                  activeClassName='navigation__menu-link_active'>
-                  Главная
-                </NavLink>
-              </li>
-              <li className='navigation__item'>
-                <NavLink
-                  to='/movies'
-                  className='navigation__link navigation__link_type_menu'
-                  activeClassName='navigation__menu-link_active'>
-                  Фильмы
-                </NavLink>
-              </li>
-              <li className='navigation__item'>
-                <NavLink
-                  to='/saved-movies'
-                  className='navigation__link navigation__link_type_menu'
-                  activeClassName='navigation__menu-link_active'>
-                  Сохранённые фильмы
-                </NavLink>
-              </li>
-              <li className='navigation__item navigation__item_type_account'>
-                <Link to='/profile' className='navigation__link navigation__link_type_account'>
-                  Аккаунт
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </>
-        {/* ) : (
-          ''
-        )} */}
+
+        <div
+          className={`navigation__background navigation__background_${
+            isMenuOpened ? 'visible' : 'hidden'
+          }`}></div>
+        <div
+          className={`navigation__container navigation__container_${
+            isMenuOpened ? 'visible' : 'hidden'
+          }`}>
+          <button className='navigation__cross-button' onClick={onClickMenu}>
+            &#x2716;
+          </button>
+          <ul className='navigation__menu'>
+            <li className='navigation__item'>
+              <NavLink
+                exact
+                to='/'
+                className='navigation__link navigation__link_type_menu'
+                activeClassName='navigation__menu-link_active'>
+                Главная
+              </NavLink>
+            </li>
+            <li className='navigation__item'>
+              <NavLink
+                to='/movies'
+                className='navigation__link navigation__link_type_menu'
+                activeClassName='navigation__menu-link_active'>
+                Фильмы
+              </NavLink>
+            </li>
+            <li className='navigation__item'>
+              <NavLink
+                to='/saved-movies'
+                className='navigation__link navigation__link_type_menu'
+                activeClassName='navigation__menu-link_active'>
+                Сохранённые фильмы
+              </NavLink>
+            </li>
+            <li className='navigation__item navigation__item_type_account'>
+              <Link to='/profile' className='navigation__link navigation__link_type_account'>
+                Аккаунт
+              </Link>
+            </li>
+          </ul>
+        </div>
       </Route>
     </nav>
   );

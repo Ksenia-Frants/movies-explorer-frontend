@@ -1,5 +1,4 @@
 import { React } from 'react';
-import './Movies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import cardData from '../../utils/cardData';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';

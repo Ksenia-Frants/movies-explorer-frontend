@@ -1,8 +1,8 @@
-import { React } from 'react';
+import React from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function Movies() {
+function SavedMovies() {
   return (
     <main className='content'>
       <SearchForm />
@@ -11,4 +11,4 @@ function Movies() {
   );
 }
 
-export default Movies;
+export default SavedMovies;

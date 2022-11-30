@@ -29,9 +29,9 @@ function MoviesCard({ movie }) {
             <button className='movies-card__button movies-card__button_save'>Сохранить</button>
           )} */}
         </Route>
-        {/* <Route path='/saved-movies'>
-          <button className='movies-card__button_delete'></button>
-        </Route> */}
+        <Route path='/saved-movies'>
+          <button className='movies-card__button movies-card__button_delete'></button>
+        </Route>
       </Switch>
     </li>
   );

@@ -8,6 +8,12 @@
 .movies-card__image {
   border-radius: 6px;
   object-fit: cover;
+  transition: opacity 0.3s linear;
+  width: 100%;
+}
+
+.movies-card__image:hover {
+  opacity: 0.8;
 }
 
 .movies-card__description {
@@ -78,6 +84,14 @@
   padding: 6px 7px;
   width: 72px;
 }
+.movies-card__button_delete {
+  background-image: url(../../images/cross-button.svg);
+  width: 21px;
+  height: 21px;
+  background-color: transparent;
+  border-radius: 30px;
+  border: none;
+}
 
 @media screen and (max-width: 885px) {
   .movies-card__description {
@@ -97,7 +111,7 @@
 
 @media screen and (max-width: 400px) {
   .movies-card__item {
-    max-width: 283px;
+    max-width: 300px;
     margin: auto;
   }
 

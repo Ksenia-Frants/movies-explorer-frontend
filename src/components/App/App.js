@@ -4,9 +4,9 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 // import Register from '../Register';
 // import Login from '../Login';
-// import SavedMovies from '../SavedMovies';
 
 import './App.css';
 
@@ -20,6 +20,9 @@ function App() {
         </Route>
         <Route path='/movies'>
           <Movies />
+        </Route>
+        <Route path='/saved-movies'>
+          <SavedMovies />
         </Route>
       </Switch>
       <Footer />

@@ -11,7 +11,7 @@ import film10 from '../images/film10.jpg';
 import film11 from '../images/film11.jpg';
 import film12 from '../images/film12.jpg';
 
-const cardData = [
+export const cardData = [
   {
     pic: film1,
     _id: 1,
@@ -98,4 +98,26 @@ const cardData = [
   },
 ];
 
-export default cardData;
+export const savedCardData = [
+  {
+    pic: film1,
+    _id: 1,
+    title: '33 слова о дизайне',
+    time: '1ч 17м',
+    saved: false,
+  },
+  {
+    pic: film2,
+    _id: 2,
+    title: 'Киноальманах «100 лет дизайна»',
+    time: '1ч 17м',
+    saved: true,
+  },
+  {
+    pic: film3,
+    _id: 3,
+    title: 'В погоне за Бенкси',
+    time: '1ч 17м',
+    saved: false,
+  },
+];

@@ -4,13 +4,13 @@ import './Header.css';
 import logo from '../../images/logo.svg';
 import Navigation from '../Navigation/Navigation';
 
-function Header() {
+function Header({ logged }) {
   return (
     <header className='header'>
       <Link to='/' className='header__link'>
         <img src={logo} alt='Логотип приложения.' className='header__logo' />
       </Link>
-      <Navigation />
+      <Navigation logged={logged} />
     </header>
   );
 }

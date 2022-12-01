@@ -50,7 +50,6 @@
   display: flex;
   align-items: center;
   width: 100%;
-  cursor: pointer;
 }
 
 .profile__input {
@@ -62,7 +61,10 @@
   text-align: right;
   color: #000000;
   outline: none;
-  cursor: pointer;
+}
+
+.profile__input:disabled {
+  background-color: transparent;
 }
 
 .profile__button {
@@ -90,6 +92,25 @@
   margin-top: 16px;
   font-weight: 500;
   color: #ff4062;
+}
+
+.profile__button_type_save {
+  margin-top: auto;
+  max-width: 410px;
+  width: 100%;
+  background: #3456f3;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  padding: 13px 0 15px;
+}
+
+.profile__button_type_save:disabled {
+  background: #f8f8f8;
+  color: #c2c2c2;
 }
 
 @media screen and (max-width: 768px) {

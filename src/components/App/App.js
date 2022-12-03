@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
-// import Register from '../Register';
+import Register from '../Register/Register';
 // import Login from '../Login';
 
 import './App.css';
@@ -33,6 +33,9 @@ function App() {
         <Route path='/profile'>
           <Header logged={true} />
           <Profile />
+        </Route>
+        <Route path='/signup'>
+          <Register />
         </Route>
       </Switch>
     </div>

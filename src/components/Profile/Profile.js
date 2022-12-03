@@ -39,6 +39,7 @@ function Profile() {
             disabled={disabled ? true : false}
             required></input>
         </fieldset>
+        <span className='profile__error'>При обновлении профиля произошла ошибка.</span>
         {disabled ? (
           <button
             className='profile__button profile__button_type_edit'

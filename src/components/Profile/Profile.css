@@ -67,6 +67,16 @@
   background-color: transparent;
 }
 
+.profile__error {
+  margin: auto 0 20px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #ff004c;
+  visibility: hidden;
+}
+
 .profile__button {
   border: none;
   background: transparent;
@@ -95,7 +105,7 @@
 }
 
 .profile__button_type_save {
-  margin-top: auto;
+  /* margin-top: auto; */
   max-width: 410px;
   width: 100%;
   background: #3456f3;

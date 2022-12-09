@@ -7,9 +7,9 @@ function Register() {
   return (
     <section className='register'>
       <div className='register__container'>
-        <Logo />
-        <h1 className='register__title'>Добро пожаловать!</h1>
         <form className='register__form'>
+          <Logo />
+          <h1 className='register__title'>Добро пожаловать!</h1>
           <label className='register__label'>
             <span className='register__input-name'>Имя</span>
             <input

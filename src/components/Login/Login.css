@@ -51,6 +51,11 @@
   border: none;
   outline: none;
   margin-bottom: 20px;
+  transition: box-shadow 0.3s linear;
+}
+
+.login__input:focus {
+  box-shadow: 0 0 20px #dcd9d9;
 }
 
 .login__input[type='password'] {

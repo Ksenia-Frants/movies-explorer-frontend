@@ -23,6 +23,11 @@
   line-height: 18px;
   color: #a0a0a0;
   margin-right: 10px;
+  transition: box-shadow 0.3s linear;
+}
+
+.search-form__input:focus {
+  box-shadow: 0 0 20px #dcd9d9;
 }
 
 .search-form__button {

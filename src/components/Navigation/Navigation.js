@@ -49,7 +49,7 @@ function Navigation({ logged }) {
               <NavLink
                 to='/profile'
                 className='navigation__link navigation__link_type_account'
-                activeClassName='navigation__link_active'>
+                activeClassName='navigation__profile-link_active'>
                 Аккаунт
               </NavLink>
             </li>
@@ -96,9 +96,12 @@ function Navigation({ logged }) {
                 </NavLink>
               </li>
               <li className='navigation__item navigation__item_type_account'>
-                <Link to='/profile' className='navigation__link navigation__link_type_account'>
+                <NavLink
+                  to='/profile'
+                  className='navigation__link navigation__link_type_account'
+                  activeClassName='navigation__profile-link_active'>
                   Аккаунт
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>

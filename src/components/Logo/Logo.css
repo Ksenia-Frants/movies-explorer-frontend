@@ -1,0 +1,13 @@
+.logo__link {
+  height: 38px;
+  width: 38px;
+}
+
+.logo__image {
+  border-radius: 50%;
+  transition: box-shadow 0.3s linear;
+}
+
+.logo__image:hover {
+  box-shadow: 0 0 20px #a3a3a3;
+}

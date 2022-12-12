@@ -82,6 +82,10 @@
   padding-bottom: 4px;
 }
 
+.navigation__profile-link_active {
+  box-shadow: 0 0 20px #dcd9d9;
+}
+
 .navigation__burger-button {
   position: relative;
   background: transparent;

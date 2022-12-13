@@ -21,6 +21,7 @@
   position: relative;
   transition: opacity 0.3s linear;
   cursor: pointer;
+  display: flex;
 }
 
 .portfolio__item:hover {
@@ -32,7 +33,17 @@
   padding-bottom: 0;
 }
 
-.portfolio__item::after {
+.portfolio__link {
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 50px;
+  letter-spacing: -0.04em;
+  color: #000000;
+  text-decoration: none;
+  width: 100%;
+}
+
+.portfolio__link::after {
   content: '';
   background-image: url('../../images/arrow.svg');
   width: 20px;
@@ -45,16 +56,7 @@
   background-size: contain;
 }
 
-.portfolio__link {
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 50px;
-  letter-spacing: -0.04em;
-  color: #000000;
-  text-decoration: none;
-}
-
-.portfolio__item:hover::after {
+.portfolio__item:hover .portfolio__link::after {
   transform: scale(1.2);
 }
 

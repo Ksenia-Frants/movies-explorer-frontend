@@ -13,59 +13,6 @@
   width: 100%;
 }
 
-.register__title {
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 29px;
-  color: #000000;
-  margin: 40px 0;
-}
-
-.register__form {
-  display: flex;
-  flex-direction: column;
-}
-
-.register__label {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.register__input-name {
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
-  color: #a0a0a0;
-}
-
-.register__input {
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 16px;
-  color: #000000;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  margin-bottom: 20px;
-  transition: box-shadow 0.3s linear;
-}
-
-.register__input:focus {
-  box-shadow: 0 0 20px #dcd9d9;
-}
-
-.register__input[type='password'] {
-  margin-bottom: 10px;
-}
-
-.register__input:invalid {
-  color: #ff4062;
-}
-
 .register__error {
   font-weight: 400;
   font-size: 10px;
@@ -92,32 +39,6 @@
   opacity: 0.8;
 }
 
-.register__signin-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-}
-
-.register__text {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  text-align: center;
-  color: #a0a0a0;
-  margin-right: 6px;
-}
-
-.register__signin {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  text-align: center;
-  color: #000000;
-  text-decoration: none;
-  transition: opacity 0.3s linear;
-}
-
 .register__signin:hover {
   opacity: 0.7;
 }
@@ -126,15 +47,6 @@
   .register {
     padding: 56px 30px 30px;
     align-items: flex-start;
-  }
-
-  .register__form {
-    align-items: center;
-    height: calc(100vh - 119px);
-  }
-
-  .register__title {
-    margin: 50px 0 80px;
   }
 
   .register__error {
@@ -146,20 +58,6 @@
     max-width: 260px;
     width: 100%;
     margin-top: auto;
-    font-size: 12px;
-    line-height: 15px;
-  }
-
-  .register__signin-container {
-    margin-top: 14px;
-  }
-
-  .register__text {
-    font-size: 12px;
-    line-height: 15px;
-  }
-
-  .register__signin {
     font-size: 12px;
     line-height: 15px;
   }

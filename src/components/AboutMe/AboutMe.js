@@ -2,11 +2,12 @@ import React from 'react';
 import './AboutMe.css';
 import avatar from '../../images/me.jpg';
 import Portfolio from '../Portfolio/Portfolio';
+import SecondTitle from '../SecondTitle/SecondTitle';
 
 function AboutMe() {
   return (
     <section className='about-me' id='about-me'>
-      <h2 className='about-me__title'>Студент</h2>
+      <SecondTitle name='Студент' />
       <div className='about-me__info'>
         <div className='about-me__container'>
           <h3 className='about-me__name'>Ксения</h3>

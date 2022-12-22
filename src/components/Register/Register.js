@@ -1,53 +1,26 @@
 import { React } from 'react';
-import { Link } from 'react-router-dom';
 import './Register.css';
-import Logo from '../Logo/Logo';
+import Input from '../Input/Input';
+import Form from '../Form/Form';
+import FormLink from '../FormLink/FormLink';
 
 function Register() {
   return (
     <section className='register'>
       <div className='register__container'>
-        <form className='register__form'>
-          <Logo />
-          <h1 className='register__title'>Добро пожаловать!</h1>
-          <label className='register__label'>
-            <span className='register__input-name'>Имя</span>
-            <input
-              className='register__input'
-              name='name'
-              type='text'
-              defaultValue='Ксения'
-              required></input>
-          </label>
-          <label className='register__label'>
-            <span className='register__input-name'>E-mail</span>
-            <input
-              className='register__input'
-              name='email'
-              type='email'
-              defaultValue='pochta@yandex.ru'
-              required></input>
-          </label>
-          <label className='register__label'>
-            <span className='register__input-name'>Пароль</span>
-            <input
-              className='register__input'
-              name='password'
-              type='password'
-              defaultValue='••••••••••••••'
-              required></input>
-          </label>
+        <Form title='Добро пожаловать!'>
+          <Input spanText='Имя' name='name' type='text' defaultValue='Ксения' />
+
+          <Input spanText='E-mail' name='email' type='email' defaultValue='pochta@yandex.ru' />
+
+          <Input spanText='Пароль' name='password' type='password' defaultValue='••••••••••••••' />
+
           <span className='register__error'>Что-то пошло не так...</span>
           <button type='submit' className='register__button'>
             Зарегистрироваться
           </button>
-        </form>
-        <div className='register__signin-container'>
-          <span className='register__text'>Уже зарегистрированы?</span>
-          <Link to='/signin' className='register__signin'>
-            Войти
-          </Link>
-        </div>
+        </Form>
+        <FormLink text='Уже зарегистрированы?' page='/signin' link='Войти' />
       </div>
     </section>
   );

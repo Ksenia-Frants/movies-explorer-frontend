@@ -1,11 +1,13 @@
 import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
+import useFormWithValidation from '../../hooks/useFormWithValidation';
 
 function Profile() {
+  const { values, handleChange, isValid } = useFormWithValidation();
   const [disabled, setDisabled] = useState(true);
 
-  function handleChange(evt) {
+  function handleRelate(evt) {
     evt.preventDefault();
     setDisabled(false);
   }
@@ -25,31 +27,38 @@ function Profile() {
             name='name'
             id='name'
             disabled={disabled ? true : false}
-            required></input>
+            required
+            placeholder='Имя'
+            values={values.name || ''}
+            onChange={handleChange}></input>
         </fieldset>
         <fieldset className='profile__fieldset profile__fieldset_type_email'>
           <label className='profile__label' htmlFor='email'>
             E-mail
           </label>
           <input
+            pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
             className='profile__input'
             defaultValue='pochta@yandex.ru'
             type='email'
             name='email'
             id='email'
             disabled={disabled ? true : false}
-            required></input>
+            required
+            placeholder='Почта'></input>
         </fieldset>
         <span className='profile__error'>При обновлении профиля произошла ошибка.</span>
         {disabled ? (
           <button
             className='profile__button profile__button_type_edit'
             type='submit'
-            onClick={handleChange}>
+            onClick={handleRelate}>
             Редактировать
           </button>
         ) : (
-          <button className='profile__button profile__button_type_save'>Сохранить</button>
+          <button className='profile__button profile__button_type_save' disabled={!isValid}>
+            Сохранить
+          </button>
         )}
       </form>
       {disabled ? (

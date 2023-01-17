@@ -1,3 +1,3 @@
 # Дипломный проект movies-explorer-frontend
 
-Макет можно посмотреть [здесь](https://docviewer.yandex.ru/view/930870828/?*=BtL8ZmW7srRrMooWNTTxaZJOwu57InVybCI6InlhLWRpc2s6Ly8vZGlzay%2FQl9Cw0LPRgNGD0LfQutC4L9Cc0LDQutC10YIg0JTQuNC%2F0LvQvtC80LAuZmlnIiwidGl0bGUiOiLQnNCw0LrQtdGCINCU0LjQv9C70L7QvNCwLmZpZyIsIm5vaWZyYW1lIjpmYWxzZSwidWlkIjoiOTMwODcwODI4IiwidHMiOjE2NzM5NTg0OTY1OTUsInl1IjoiMTA5NjQxMjA0MTYzNzQ3MzU2OCJ9)
+Макет можно посмотреть [здесь](https://drive.google.com/file/d/1I2E2a3-o_B5LZjNvo-Fh_jHx1akqvd5Q/view?usp=share_link)

@@ -48,6 +48,13 @@
   opacity: 0.8;
 }
 
+.search-form__error {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff4062;
+}
+
 @media screen and (max-width: 768px) {
   .search-form {
     padding: 80px 30px 10px;

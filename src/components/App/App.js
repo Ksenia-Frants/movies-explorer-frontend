@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -16,13 +16,18 @@ import { filterMovies, filterShortMovies } from '../../utils/utils';
 import './App.css';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [areMoviesLoading, setAreMoviesLoading] = useState(false);
   const [shortMovies, setShortMovies] = useState(false);
   const [isError, setIsError] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const [initialMovies, setInititalMovies] = useState(false);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
+
+  const [isRegisterPageLoading, setIsRegisterPageLoading] = useState(false);
+  const [registerErrorMessage, setRegisterErrorMessage] = useState({});
+
+  const history = useHistory();
 
   useEffect(() => {
     if (localStorage.getItem('shortMovies') === 'true') {
@@ -52,8 +57,8 @@ function App() {
     localStorage.setItem('movies', JSON.stringify(moviesList));
   }
 
-  function handleSearchSubmit(inputValue) {
-    setIsLoading(true);
+  function handleSearchMovieSubmit(inputValue) {
+    setAreMoviesLoading(true);
     localStorage.setItem('movieSearch', inputValue);
     localStorage.setItem('shortMovies', shortMovies);
 
@@ -66,7 +71,7 @@ function App() {
         setIsError(true);
         console.log(err);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setAreMoviesLoading(false));
   }
 
   function toggleShortFilms() {
@@ -111,6 +116,24 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleRegister({ name, email, password }) {
+    setIsRegisterPageLoading(true);
+    mainApi
+      .register(name, email, password)
+      .then((res) => {
+        if (res) {
+          history.push('/signin');
+        }
+      })
+      .catch((err) => {
+        setRegisterErrorMessage(err);
+        console.log(err);
+      })
+      .finally(() => {
+        setIsRegisterPageLoading(false);
+      });
+  }
+
   return (
     <div className='app'>
       <Switch>
@@ -122,10 +145,10 @@ function App() {
         <Route path='/movies'>
           <Header logged={true} />
           <Movies
-            isLoading={isLoading}
+            isLoading={areMoviesLoading}
             isError={isError}
             noResults={noResults}
-            handleSearchSubmit={handleSearchSubmit}
+            handleSearchSubmit={handleSearchMovieSubmit}
             toggleShortFilms={toggleShortFilms}
             shortMovies={shortMovies}
             moviesList={filteredMovies}
@@ -146,7 +169,11 @@ function App() {
           <Profile />
         </Route>
         <Route path='/signup'>
-          <Register />
+          <Register
+            handleRegister={handleRegister}
+            errorMessage={registerErrorMessage}
+            isLoading={isRegisterPageLoading}
+          />
         </Route>
         <Route path='/signin'>
           <Login />

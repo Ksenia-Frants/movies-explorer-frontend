@@ -1,0 +1,15 @@
+.movies {
+  min-height: calc(100vh - 250px);
+}
+
+.movies__error {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ff4062;
+  display: flex;
+  justify-content: center;
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+}

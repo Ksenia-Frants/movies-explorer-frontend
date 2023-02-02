@@ -1,56 +1,47 @@
 import { React } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-// import moviesApi from '../../utils/MoviesApi';
-// import { filterMovies, filterShortMovies } from '../../utils/utils';
+import './Movies.css';
 
-function Movies() {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [shortMovies, setShortMovies] = useState(false);
-  // const [notFound, setNotFound] = useState(false);
-  // const [filteredMovies, setFilteredMovies] = useState([]);
-
-  // function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
-  //   const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
-  //   moviesList.length === 0 ? setNotFound(true) : setNotFound(false);
-  //   setFilteredMovies(shortMoviesCheckbox ? filterShortMovies(moviesList) : moviesList);
-  //   localStorage.setItem('movies', JSON.stringify(moviesList));
-  // }
-
-  // function handleSearchSubmit(inputValue) {
-  //   setIsLoading(true);
-  //   localStorage.setItem('movieSearch', inputValue);
-  //   localStorage.setItem('shortMovies', shortMovies);
-
-  //   moviesApi
-  //     .getMovies()
-  //     .then((data) => {
-  //       handleSetFilteredMovies(data, inputValue, shortMovies);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => setIsLoading(false));
-  // }
-
-  // function handleShortFilms() {
-  //   setShortMovies(!shortMovies);
-  //   localStorage.setItem('shortMovies', !shortMovies);
-  // }
-
-  // useEffect(() => {
-  //   if (localStorage.getItem('shortMovies') === 'true') {
-  //     setShortMovies(true);
-  //   } else {
-  //     setShortMovies(false);
-  //   }
-  // }, []);
-
+function Movies({
+  isLoading,
+  isError,
+  noResults,
+  handleSearchSubmit,
+  toggleShortFilms,
+  shortMovies,
+  moviesList,
+  handleMovieSave,
+  handleMovieDelete,
+  savedMoviesList,
+  savedMoviesPage,
+}) {
   return (
-    <main className='content'>
-      <SearchForm />
-      <MoviesCardList />
-    </main>
+    <section className='movies'>
+      <SearchForm
+        handleSearchSubmit={handleSearchSubmit}
+        toggleShortFilms={toggleShortFilms}
+        shortMovies={shortMovies}
+      />
+      {isError ? (
+        <span className='movies__error'>
+          Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен.
+          Подождите немного и попробуйте ещё раз
+        </span>
+      ) : (
+        <>
+          <MoviesCardList
+            isLoading={isLoading}
+            noResults={noResults}
+            moviesList={moviesList}
+            handleMovieSave={handleMovieSave}
+            handleMovieDelete={handleMovieDelete}
+            savedMoviesList={savedMoviesList}
+            savedMoviesPage={savedMoviesPage}
+          />
+        </>
+      )}
+    </section>
   );
 }
 

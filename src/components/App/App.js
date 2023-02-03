@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -12,6 +12,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import mainApi from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
 import { filterMovies, filterShortMovies } from '../../utils/utils';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import './App.css';
 
@@ -24,8 +25,12 @@ function App() {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
 
-  const [isRegisterPageLoading, setIsRegisterPageLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = useState({});
+  const [loginErrorMessage, setLoginErrorMessage] = useState({});
+
+  const footerEndpoints = ['/movies', '/saved-movies', '/'];
 
   const history = useHistory();
 
@@ -48,6 +53,22 @@ function App() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      mainApi
+        .getUser()
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [history]);
 
   function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
     const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
@@ -117,12 +138,12 @@ function App() {
   }
 
   function handleRegister({ name, email, password }) {
-    setIsRegisterPageLoading(true);
+    setIsPageLoading(true);
     mainApi
       .register(name, email, password)
       .then((res) => {
         if (res) {
-          history.push('/signin');
+          handleLogin({ email, password });
         }
       })
       .catch((err) => {
@@ -130,58 +151,93 @@ function App() {
         console.log(err);
       })
       .finally(() => {
-        setIsRegisterPageLoading(false);
+        setIsPageLoading(false);
+      });
+  }
+
+  function handleLogin({ email, password }) {
+    setIsPageLoading(true);
+    mainApi
+      .authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem('jwt', res.token);
+          setLoggedIn(true);
+          history.push('/movies');
+        }
+      })
+      .catch((err) => {
+        setLoginErrorMessage(err);
+        console.log(err);
+      })
+      .finally(() => {
+        setIsPageLoading(false);
       });
   }
 
   return (
     <div className='app'>
+      <Header loggedIn={loggedIn} />
       <Switch>
         <Route exact path='/'>
-          <Header logged={false} />
           <Main />
-          <Footer />
         </Route>
-        <Route path='/movies'>
-          <Header logged={true} />
-          <Movies
-            isLoading={areMoviesLoading}
-            isError={isError}
-            noResults={noResults}
-            handleSearchSubmit={handleSearchMovieSubmit}
-            toggleShortFilms={toggleShortFilms}
-            shortMovies={shortMovies}
-            moviesList={filteredMovies}
-            handleMovieSave={handleMovieSave}
-            handleMovieDelete={handleMovieDelete}
-            savedMoviesList={savedMoviesList}
-            savedMoviesPage={false}
-          />
-          <Footer />
-        </Route>
-        <Route path='/saved-movies'>
-          <Header logged={true} />
-          <SavedMovies handleMovieDelete={handleMovieDelete} savedMoviesList={savedMoviesList} />
-          <Footer />
-        </Route>
-        <Route path='/profile'>
-          <Header logged={true} />
-          <Profile />
-        </Route>
+
+        <ProtectedRoute
+          path='/movies'
+          component={Movies}
+          loggedIn={loggedIn}
+          isLoading={areMoviesLoading}
+          isError={isError}
+          noResults={noResults}
+          handleSearchSubmit={handleSearchMovieSubmit}
+          toggleShortFilms={toggleShortFilms}
+          shortMovies={shortMovies}
+          moviesList={filteredMovies}
+          handleMovieSave={handleMovieSave}
+          handleMovieDelete={handleMovieDelete}
+          savedMoviesList={savedMoviesList}
+          savedMoviesPage={false}>
+          <Movies />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path='/saved-movies'
+          component={SavedMovies}
+          handleMovieDelete={handleMovieDelete}
+          savedMoviesList={savedMoviesList}></ProtectedRoute>
+
+        <ProtectedRoute path='/profile' component={Profile}></ProtectedRoute>
+
         <Route path='/signup'>
-          <Register
-            handleRegister={handleRegister}
-            errorMessage={registerErrorMessage}
-            isLoading={isRegisterPageLoading}
-          />
+          {loggedIn ? (
+            <Redirect to='/movies' />
+          ) : (
+            <Register
+              handleRegister={handleRegister}
+              errorMessage={registerErrorMessage}
+              isLoading={isPageLoading}
+            />
+          )}
         </Route>
         <Route path='/signin'>
-          <Login />
+          {loggedIn ? (
+            <Redirect to='/movies' />
+          ) : (
+            <Login
+              handleLogin={handleLogin}
+              isLoading={isPageLoading}
+              errorMessage={loginErrorMessage}
+            />
+          )}
         </Route>
         <Route path='*'>
           <PageNotFound />
         </Route>
       </Switch>
+      <Route exact path={footerEndpoints}>
+        <Footer />
+      </Route>
     </div>
   );
 }

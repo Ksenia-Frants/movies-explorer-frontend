@@ -90,6 +90,21 @@
   transition: opacity 0.3s linear;
   border: none;
 }
+.login__page-error {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #ff004c;
+  opacity: 0;
+  visibility: hidden;
+  margin-bottom: 20px;
+}
+
+.login__page-error_visible {
+  opacity: 1;
+  visibility: visible;
+}
 
 .login__button:hover {
   opacity: 0.8;

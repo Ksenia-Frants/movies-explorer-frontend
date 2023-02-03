@@ -24,6 +24,7 @@
   color: #a0a0a0;
   margin-right: 10px;
   transition: box-shadow 0.3s linear;
+  position: relative;
 }
 
 .search-form__input:focus {
@@ -53,6 +54,8 @@
   font-size: 10px;
   line-height: 12px;
   color: #ff4062;
+  position: absolute;
+  top: 205px;
 }
 
 @media screen and (max-width: 768px) {

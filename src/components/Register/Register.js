@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useEffect } from 'react';
 import './Register.css';
 import Logo from '../Logo/Logo';
 import FormLink from '../FormLink/FormLink';
@@ -6,12 +6,16 @@ import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Preloader from '../Preloader/Preloader';
 
 function Register({ handleRegister, errorMessage, isLoading }) {
-  const { values, handleChange, errors, isValid } = useFormWithValidation();
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
     handleRegister(values);
   }
+
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
 
   return (
     <section className='register'>
@@ -30,6 +34,8 @@ function Register({ handleRegister, errorMessage, isLoading }) {
                 type='text'
                 placeholder='Имя'
                 required
+                minLength='2'
+                maxLength='40'
                 values={values.name || ''}
                 onChange={handleChange}></input>
               <span className='register__error'>{errors.name || ''}</span>
@@ -58,7 +64,14 @@ function Register({ handleRegister, errorMessage, isLoading }) {
                 onChange={handleChange}></input>
               <span className='register__error'>{errors.password || ''}</span>
             </label>
-            <span className={errorMessage.message ? 'register__error' : ''}></span>
+            <span
+              className={
+                errorMessage.message
+                  ? 'register__page-error register__page-error_visible'
+                  : 'register__page-error'
+              }>
+              {errorMessage.message}
+            </span>
             <button type='submit' className='register__button' disabled={!isValid}>
               Зарегистрироваться
             </button>

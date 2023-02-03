@@ -15,7 +15,9 @@ function Movies({
   handleMovieDelete,
   savedMoviesList,
   savedMoviesPage,
+  loggedIn,
 }) {
+  console.log(loggedIn);
   return (
     <section className='movies'>
       <SearchForm

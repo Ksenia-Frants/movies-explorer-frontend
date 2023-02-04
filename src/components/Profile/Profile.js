@@ -5,8 +5,10 @@ import useFormWithValidation from '../../hooks/useFormWithValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 function Profile({ handleSignOut, handleEditProfile, user }) {
-  const { values, handleChange, isValid, resetForm, setValues } = useFormWithValidation();
+  const { values, handleChange, isValid, resetForm, setValues, errors } = useFormWithValidation();
   const [disabled, setDisabled] = useState(true);
+  const [noNameChanges, setNoNameChanges] = useState(true);
+  const [noEmailChanges, setNoEmailChanges] = useState(true);
   const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
@@ -27,6 +29,17 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     handleEditProfile(values);
+    setDisabled(true);
+  }
+
+  function checkNameChange(evt) {
+    handleChange(evt);
+    currentUser.name === evt.target.value ? setNoNameChanges(true) : setNoNameChanges(false);
+  }
+
+  function checkEmailChange(evt) {
+    handleChange(evt);
+    currentUser.email === evt.target.value ? setNoEmailChanges(true) : setNoEmailChanges(false);
   }
 
   return (
@@ -45,15 +58,14 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
             disabled={disabled ? true : false}
             required
             placeholder='Имя'
-            values={values.name || ''}
-            onChange={handleChange}></input>
+            defaultValue={values.name || ''}
+            onChange={checkNameChange}></input>
         </fieldset>
         <fieldset className='profile__fieldset profile__fieldset_type_email'>
           <label className='profile__label' htmlFor='email'>
             E-mail
           </label>
           <input
-            pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
             className='profile__input'
             type='email'
             name='email'
@@ -61,9 +73,10 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
             disabled={disabled ? true : false}
             required
             placeholder='Почта'
-            values={values.email || ''}></input>
+            defaultValue={values.email || ''}
+            onChange={checkEmailChange}></input>
         </fieldset>
-        <span className='profile__error'>При обновлении профиля произошла ошибка.</span>
+        <span className='profile__error'>{errors.name}</span>
         {disabled ? (
           <button
             className='profile__button profile__button_type_edit'
@@ -74,7 +87,7 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
         ) : (
           <button
             className='profile__button profile__button_type_save'
-            disabled={!isValid}
+            disabled={!isValid || (noNameChanges && noEmailChanges)}
             onClick={handleSubmit}>
             Сохранить
           </button>

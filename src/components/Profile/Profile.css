@@ -67,6 +67,10 @@
   background-color: transparent;
 }
 
+.profile__input:invalid {
+  color: #ff004d;
+}
+
 .profile__error {
   margin: auto 0 20px;
   font-weight: 400;
@@ -74,7 +78,6 @@
   line-height: 13px;
   text-align: center;
   color: #ff004c;
-  visibility: hidden;
 }
 
 .profile__button {

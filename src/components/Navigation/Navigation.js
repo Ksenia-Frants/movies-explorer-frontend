@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 
-function Navigation({ loggedIn }) {
+function Navigation() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   function onClickMenu() {

@@ -16,3 +16,16 @@ export function filterMovies(movies, userQuery, shortMoviesCheckbox) {
     return moviesByUserQuery;
   }
 }
+
+export function remakeMovieData(movies) {
+  movies.forEach((movie) => {
+    if (!movie.image) {
+      movie.image = 'https://portal-kultura.ru/upload/iblock/773/cinema-geabd9454f_1920.jpg';
+      movie.thumbnail = 'https://portal-kultura.ru/upload/iblock/773/cinema-geabd9454f_1920.jpg';
+    } else {
+      movie.thumbnail = `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`;
+      movie.image = `https://api.nomoreparties.co/${movie.image.url}`;
+    }
+  });
+  return movies;
+}

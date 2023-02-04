@@ -19,11 +19,7 @@ function MoviesCard({ movie, handleMovieSave, handleMovieDelete, saved, savedMov
         href={movie.trailerLink || movie.trailer}
         target='_blank'
         rel='noreferrer'>
-        <img
-          className='movies-card__image'
-          src={`https://api.nomoreparties.co/${movie.image.url}`}
-          alt={movie.nameRU}
-        />
+        <img className='movies-card__image' src={movie.image} alt={movie.nameRU} />
       </a>
       <div className='movies-card__description'>
         <h2 className='movies-card__title'>{movie.nameRU}</h2>
@@ -40,7 +36,9 @@ function MoviesCard({ movie, handleMovieSave, handleMovieDelete, saved, savedMov
           {saved ? '' : 'Сохранить'}
         </button>
       ) : (
-        <button className='movies-card__button movies-card__button_delete'></button>
+        <button
+          className='movies-card__button movies-card__button_delete'
+          onClick={handleDeleteClick}></button>
       )}
       {/* <Switch>
         <Route path='/movies'>

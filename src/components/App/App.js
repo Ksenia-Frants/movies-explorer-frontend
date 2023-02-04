@@ -13,6 +13,8 @@ import mainApi from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
 import { filterMovies, filterShortMovies } from '../../utils/utils';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import { remakeMovieData } from '../../utils/utils';
 
 import './App.css';
 
@@ -29,6 +31,7 @@ function App() {
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = useState({});
   const [loginErrorMessage, setLoginErrorMessage] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
 
   const footerEndpoints = ['/movies', '/saved-movies', '/'];
 
@@ -70,6 +73,48 @@ function App() {
     }
   }, [history]);
 
+  useEffect(() => {
+    if (localStorage.getItem('movies')) {
+      const movies = JSON.parse(localStorage.getItem('movies'));
+      setInititalMovies(movies);
+      if (localStorage.getItem('shortMovies') === 'true') {
+        setFilteredMovies(filterShortMovies(movies));
+      } else {
+        setFilteredMovies(movies);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getSavedMovies()
+        .then((res) => {
+          setSavedMoviesList(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      setIsPageLoading(true);
+      mainApi
+        .getUser()
+        .then((res) => {
+          setCurrentUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsPageLoading(false);
+        });
+    }
+  }, [loggedIn]);
+
   function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
     const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
     moviesList.length === 0 ? setNoResults(true) : setNoResults(false);
@@ -86,7 +131,7 @@ function App() {
     moviesApi
       .getMovies()
       .then((data) => {
-        handleSetFilteredMovies(data, inputValue, shortMovies);
+        handleSetFilteredMovies(remakeMovieData(data), inputValue, shortMovies);
       })
       .catch((err) => {
         setIsError(true);
@@ -175,69 +220,100 @@ function App() {
       });
   }
 
+  function handleSignOut() {
+    setCurrentUser({});
+    localStorage.clear();
+    setLoggedIn(false);
+    history.push('/');
+  }
+
+  function handleEditProfile(newProfile) {
+    setIsPageLoading(true);
+    mainApi
+      .updateUser(newProfile)
+      .then((res) => {
+        setCurrentUser(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsPageLoading(false);
+      });
+  }
+
   return (
     <div className='app'>
-      <Header loggedIn={loggedIn} />
-      <Switch>
-        <Route exact path='/'>
-          <Main />
-        </Route>
+      <CurrentUserContext.Provider value={currentUser}>
+        <Header loggedIn={loggedIn} />
+        <Switch>
+          <Route exact path='/'>
+            <Main />
+          </Route>
 
-        <ProtectedRoute
-          path='/movies'
-          component={Movies}
-          loggedIn={loggedIn}
-          isLoading={areMoviesLoading}
-          isError={isError}
-          noResults={noResults}
-          handleSearchSubmit={handleSearchMovieSubmit}
-          toggleShortFilms={toggleShortFilms}
-          shortMovies={shortMovies}
-          moviesList={filteredMovies}
-          handleMovieSave={handleMovieSave}
-          handleMovieDelete={handleMovieDelete}
-          savedMoviesList={savedMoviesList}
-          savedMoviesPage={false}>
-          <Movies />
-        </ProtectedRoute>
+          <ProtectedRoute
+            path='/movies'
+            component={Movies}
+            loggedIn={loggedIn}
+            isLoading={areMoviesLoading}
+            isError={isError}
+            noResults={noResults}
+            handleSearchSubmit={handleSearchMovieSubmit}
+            toggleShortFilms={toggleShortFilms}
+            shortMovies={shortMovies}
+            moviesList={filteredMovies}
+            handleMovieSave={handleMovieSave}
+            handleMovieDelete={handleMovieDelete}
+            savedMoviesList={savedMoviesList}
+            savedMoviesPage={false}>
+            <Movies />
+          </ProtectedRoute>
 
-        <ProtectedRoute
-          path='/saved-movies'
-          component={SavedMovies}
-          handleMovieDelete={handleMovieDelete}
-          savedMoviesList={savedMoviesList}></ProtectedRoute>
+          <ProtectedRoute
+            path='/saved-movies'
+            component={SavedMovies}
+            handleMovieDelete={handleMovieDelete}
+            savedMoviesList={savedMoviesList}
+            loggedIn={loggedIn}></ProtectedRoute>
 
-        <ProtectedRoute path='/profile' component={Profile}></ProtectedRoute>
+          <ProtectedRoute
+            path='/profile'
+            component={Profile}
+            loggedIn={loggedIn}
+            handleSignOut={handleSignOut}
+            user={currentUser}
+            handleEditProfile={handleEditProfile}></ProtectedRoute>
 
-        <Route path='/signup'>
-          {loggedIn ? (
-            <Redirect to='/movies' />
-          ) : (
-            <Register
-              handleRegister={handleRegister}
-              errorMessage={registerErrorMessage}
-              isLoading={isPageLoading}
-            />
-          )}
+          <Route path='/signup'>
+            {loggedIn ? (
+              <Redirect to='/movies' />
+            ) : (
+              <Register
+                handleRegister={handleRegister}
+                errorMessage={registerErrorMessage}
+                isLoading={isPageLoading}
+              />
+            )}
+          </Route>
+          <Route path='/signin'>
+            {loggedIn ? (
+              <Redirect to='/movies' />
+            ) : (
+              <Login
+                handleLogin={handleLogin}
+                isLoading={isPageLoading}
+                errorMessage={loginErrorMessage}
+              />
+            )}
+          </Route>
+          <Route path='*'>
+            <PageNotFound />
+          </Route>
+        </Switch>
+        <Route exact path={footerEndpoints}>
+          <Footer />
         </Route>
-        <Route path='/signin'>
-          {loggedIn ? (
-            <Redirect to='/movies' />
-          ) : (
-            <Login
-              handleLogin={handleLogin}
-              isLoading={isPageLoading}
-              errorMessage={loginErrorMessage}
-            />
-          )}
-        </Route>
-        <Route path='*'>
-          <PageNotFound />
-        </Route>
-      </Switch>
-      <Route exact path={footerEndpoints}>
-        <Footer />
-      </Route>
+      </CurrentUserContext.Provider>
     </div>
   );
 }

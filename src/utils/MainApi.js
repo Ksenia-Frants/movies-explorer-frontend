@@ -72,6 +72,14 @@ class Api {
     }).then((res) => this._errorHandler(res));
   }
 
+  getSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    }).then((res) => this._errorHandler(res));
+  }
+
   register(name, email, password) {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',

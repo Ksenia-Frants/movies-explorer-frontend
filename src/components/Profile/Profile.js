@@ -1,20 +1,37 @@
-import { React, useState } from 'react';
+import { React, useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
-function Profile() {
-  const { values, handleChange, isValid } = useFormWithValidation();
+function Profile({ handleSignOut, handleEditProfile, user }) {
+  const { values, handleChange, isValid, resetForm, setValues } = useFormWithValidation();
   const [disabled, setDisabled] = useState(true);
+  const currentUser = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    if (currentUser) {
+      resetForm();
+      setValues({
+        name: currentUser.name,
+        email: currentUser.email,
+      });
+    }
+  }, [resetForm, currentUser, setValues]);
 
   function handleRelate(evt) {
     evt.preventDefault();
     setDisabled(false);
   }
 
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    handleEditProfile(values);
+  }
+
   return (
     <section className='profile'>
-      <h1 className='profile__title'>Привет, Ксения!</h1>
+      <h1 className='profile__title'>Привет, {user.name}!</h1>
       <form className='profile__form'>
         <fieldset className='profile__fieldset profile__fieldset_type_name'>
           <label className='profile__label' htmlFor='name'>
@@ -22,7 +39,6 @@ function Profile() {
           </label>
           <input
             className='profile__input'
-            defaultValue='Ксения'
             type='text'
             name='name'
             id='name'
@@ -39,13 +55,13 @@ function Profile() {
           <input
             pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
             className='profile__input'
-            defaultValue='pochta@yandex.ru'
             type='email'
             name='email'
             id='email'
             disabled={disabled ? true : false}
             required
-            placeholder='Почта'></input>
+            placeholder='Почта'
+            values={values.email || ''}></input>
         </fieldset>
         <span className='profile__error'>При обновлении профиля произошла ошибка.</span>
         {disabled ? (
@@ -56,13 +72,21 @@ function Profile() {
             Редактировать
           </button>
         ) : (
-          <button className='profile__button profile__button_type_save' disabled={!isValid}>
+          <button
+            className='profile__button profile__button_type_save'
+            disabled={!isValid}
+            onClick={handleSubmit}>
             Сохранить
           </button>
         )}
       </form>
       {disabled ? (
-        <Link to='/' className='profile__button profile__button_type_out'>
+        <Link
+          to='/'
+          className='profile__button profile__button_type_out'
+          onClick={() => {
+            handleSignOut();
+          }}>
           Выйти из аккаунта
         </Link>
       ) : (

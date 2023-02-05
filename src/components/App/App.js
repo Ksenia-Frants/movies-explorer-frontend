@@ -29,8 +29,8 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [registerErrorMessage, setRegisterErrorMessage] = useState({});
-  const [loginErrorMessage, setLoginErrorMessage] = useState({});
+  const [registerErrorMessage, setRegisterErrorMessage] = useState('');
+  const [loginErrorMessage, setLoginErrorMessage] = useState('');
   const [currentUser, setCurrentUser] = useState({});
 
   const footerEndpoints = ['/movies', '/saved-movies', '/'];
@@ -192,7 +192,7 @@ function App() {
         }
       })
       .catch((err) => {
-        setRegisterErrorMessage(err);
+        setRegisterErrorMessage('Ошибка регистрации');
         console.log(err);
       })
       .finally(() => {
@@ -212,7 +212,7 @@ function App() {
         }
       })
       .catch((err) => {
-        setLoginErrorMessage(err);
+        setLoginErrorMessage('Ошибка авторизации');
         console.log(err);
       })
       .finally(() => {

@@ -10,52 +10,21 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import mainApi from '../../utils/MainApi';
-import * as moviesApi from '../../utils/MoviesApi';
-import { filterMovies, filterShortMovies } from '../../utils/utils';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { remakeMovieData } from '../../utils/utils';
-
 import './App.css';
 
 function App() {
-  const [areMoviesLoading, setAreMoviesLoading] = useState(false);
-  const [shortMovies, setShortMovies] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [noResults, setNoResults] = useState(false);
-  const [initialMovies, setInititalMovies] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState([]);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [registerErrorMessage, setRegisterErrorMessage] = useState('');
-  const [loginErrorMessage, setLoginErrorMessage] = useState('');
+  const [registerErrorMessage, setRegisterErrorMessage] = useState({});
+  const [loginErrorMessage, setLoginErrorMessage] = useState({});
   const [currentUser, setCurrentUser] = useState({});
 
   const footerEndpoints = ['/movies', '/saved-movies', '/'];
 
   const history = useHistory();
-
-  useEffect(() => {
-    if (localStorage.getItem('shortMovies') === 'true') {
-      setShortMovies(true);
-    } else {
-      setShortMovies(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (localStorage.getItem('movies')) {
-      const movies = JSON.parse(localStorage.getItem('movies'));
-      setInititalMovies(movies);
-      if (localStorage.getItem('shortMovies') === 'true') {
-        setFilteredMovies(filterShortMovies(movies));
-      } else {
-        setFilteredMovies(movies);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
@@ -74,21 +43,9 @@ function App() {
   }, [history]);
 
   useEffect(() => {
-    if (localStorage.getItem('movies')) {
-      const movies = JSON.parse(localStorage.getItem('movies'));
-      setInititalMovies(movies);
-      if (localStorage.getItem('shortMovies') === 'true') {
-        setFilteredMovies(filterShortMovies(movies));
-      } else {
-        setFilteredMovies(movies);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     if (loggedIn) {
       mainApi
-        .getSavedMovies()
+        .getMovies()
         .then((res) => {
           setSavedMoviesList(res);
         })
@@ -96,7 +53,7 @@ function App() {
           console.log(err);
         });
     }
-  }, [loggedIn]);
+  }, [loggedIn, savedMoviesList]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -114,41 +71,6 @@ function App() {
         });
     }
   }, [loggedIn]);
-
-  function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
-    const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
-    moviesList.length === 0 ? setNoResults(true) : setNoResults(false);
-    setInititalMovies(moviesList);
-    setFilteredMovies(shortMoviesCheckbox ? filterShortMovies(moviesList) : moviesList);
-    localStorage.setItem('movies', JSON.stringify(moviesList));
-  }
-
-  function handleSearchMovieSubmit(inputValue) {
-    setAreMoviesLoading(true);
-    localStorage.setItem('movieSearch', inputValue);
-    localStorage.setItem('shortMovies', shortMovies);
-
-    moviesApi
-      .getMovies()
-      .then((data) => {
-        handleSetFilteredMovies(remakeMovieData(data), inputValue, shortMovies);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.log(err);
-      })
-      .finally(() => setAreMoviesLoading(false));
-  }
-
-  function toggleShortFilms() {
-    setShortMovies(!shortMovies);
-    if (!shortMovies) {
-      setFilteredMovies(filterShortMovies(initialMovies));
-    } else {
-      setFilteredMovies(initialMovies);
-    }
-    localStorage.setItem('shortMovies', !shortMovies);
-  }
 
   function handleMovieSave(movie) {
     mainApi
@@ -192,7 +114,7 @@ function App() {
         }
       })
       .catch((err) => {
-        setRegisterErrorMessage('Ошибка регистрации');
+        setRegisterErrorMessage(err);
         console.log(err);
       })
       .finally(() => {
@@ -212,7 +134,7 @@ function App() {
         }
       })
       .catch((err) => {
-        setLoginErrorMessage('Ошибка авторизации');
+        setLoginErrorMessage(err);
         console.log(err);
       })
       .finally(() => {
@@ -255,13 +177,6 @@ function App() {
             path='/movies'
             component={Movies}
             loggedIn={loggedIn}
-            isLoading={areMoviesLoading}
-            isError={isError}
-            noResults={noResults}
-            handleSearchSubmit={handleSearchMovieSubmit}
-            toggleShortFilms={toggleShortFilms}
-            shortMovies={shortMovies}
-            moviesList={filteredMovies}
             handleMovieSave={handleMovieSave}
             handleMovieDelete={handleMovieDelete}
             savedMoviesList={savedMoviesList}

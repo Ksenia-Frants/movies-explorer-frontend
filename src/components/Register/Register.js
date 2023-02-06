@@ -66,11 +66,11 @@ function Register({ handleRegister, errorMessage, isLoading }) {
             </label>
             <span
               className={
-                errorMessage
+                errorMessage.message
                   ? 'register__page-error register__page-error_visible'
                   : 'register__page-error'
               }>
-              {errorMessage}
+              {errorMessage.message}
             </span>
             <button type='submit' className='register__button' disabled={!isValid}>
               Зарегистрироваться

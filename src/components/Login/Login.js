@@ -49,9 +49,11 @@ function Login({ handleLogin, isLoading, errorMessage }) {
             </label>
             <span
               className={
-                errorMessage ? 'login__page-error login__page-error_visible' : 'login__page-error'
+                errorMessage.message
+                  ? 'login__page-error login__page-error_visible'
+                  : 'login__page-error'
               }>
-              {errorMessage}
+              {errorMessage.message}
             </span>
             <button type='submit' className='login__button' disabled={!isValid}>
               Войти

@@ -3,11 +3,12 @@ class Api {
     this._baseUrl = data.baseUrl;
   }
 
-  _errorHandler(res) {
+  async _errorHandler(res) {
+    const result = await res.json();
     if (res.ok) {
-      return res.json();
+      return result;
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(result);
   }
 
   getUser() {
@@ -66,14 +67,6 @@ class Api {
   deleteMovie(data) {
     return fetch(`${this._baseUrl}/movies/${data}`, {
       method: 'DELETE',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-    }).then((res) => this._errorHandler(res));
-  }
-
-  getSavedMovies() {
-    return fetch(`${this._baseUrl}/movies`, {
       headers: {
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },

@@ -16,10 +16,12 @@ import './App.css';
 
 function App() {
   const [savedMoviesList, setSavedMoviesList] = useState([]);
+  const [updatedSavedMovieList, setUpdatedSavedMovieList] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = useState({});
   const [loginErrorMessage, setLoginErrorMessage] = useState({});
+  const [profileErrorMessage, setProfileErrorMessage] = useState({});
   const [currentUser, setCurrentUser] = useState({});
 
   const footerEndpoints = ['/movies', '/saved-movies', '/'];
@@ -30,7 +32,7 @@ function App() {
     const token = localStorage.getItem('jwt');
     if (token) {
       mainApi
-        .getUser()
+        .getUser(token)
         .then((res) => {
           if (res) {
             setLoggedIn(true);
@@ -43,23 +45,11 @@ function App() {
   }, [history]);
 
   useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getMovies()
-        .then((res) => {
-          setSavedMoviesList(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn, savedMoviesList]);
-
-  useEffect(() => {
-    if (loggedIn) {
+    const token = localStorage.getItem('jwt');
+    if (loggedIn && token) {
       setIsPageLoading(true);
       mainApi
-        .getUser()
+        .getUser(token)
         .then((res) => {
           setCurrentUser(res);
         })
@@ -72,34 +62,42 @@ function App() {
     }
   }, [loggedIn]);
 
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getMovies()
+        .then((res) => {
+          setSavedMoviesList(res.reverse());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn, updatedSavedMovieList]);
+
   function handleMovieSave(movie) {
-    mainApi
-      .postMovie(movie)
-      .then((newMovie) => {
-        setSavedMoviesList([newMovie, ...savedMoviesList]);
-      })
-      .catch((err) => console.log(err));
+    const isSavedMovie = savedMoviesList.some((userMovie) => userMovie.movieId === movie.movieId);
+
+    isSavedMovie
+      ? handleMovieDelete(movie)
+      : mainApi
+          .postMovie(movie)
+          .then((newMovie) => setSavedMoviesList([...savedMoviesList, newMovie]))
+          .catch((err) => console.log(err));
   }
 
   function handleMovieDelete(movie) {
-    const savedMovie = savedMoviesList.find((m) => {
-      if (m.movieId === movie.id || m.movieId === movie.movieId) {
-        return m;
-      } else {
-        return savedMoviesList;
-      }
-    });
+    const savedUserMovie = savedMoviesList.find(
+      (userMovie) => userMovie.movieId === movie.id || userMovie.movieId === movie.movieId,
+    );
     mainApi
-      .deleteMovie(savedMovie._id)
-      .then((res) => {
-        const newMoviesList = savedMoviesList.filter((m) => {
-          if (movie.id === m.movieId || movie.movieId === m.movieId) {
-            return false;
-          } else {
-            return true;
-          }
-        });
-        setSavedMoviesList(newMoviesList);
+      .deleteMovie(savedUserMovie._id)
+      .then(() => {
+        const newSavedMovieList = savedMoviesList.filter(
+          (userMovie) => userMovie.movieId !== movie.movieId,
+        );
+        setSavedMoviesList(newSavedMovieList);
+        setUpdatedSavedMovieList(savedMoviesList);
       })
       .catch((err) => console.log(err));
   }
@@ -149,14 +147,19 @@ function App() {
     history.push('/');
   }
 
-  function handleEditProfile(newProfile) {
+  function handleEditProfile(newProfile, setIsNotifyVisible) {
     setIsPageLoading(true);
     mainApi
       .updateUser(newProfile)
       .then((res) => {
         setCurrentUser(res);
+        setIsNotifyVisible(true);
+        setInterval(() => {
+          setIsNotifyVisible(false);
+        }, 3000);
       })
       .catch((err) => {
+        setProfileErrorMessage(err);
         console.log(err);
       })
       .finally(() => {
@@ -197,7 +200,8 @@ function App() {
             loggedIn={loggedIn}
             handleSignOut={handleSignOut}
             user={currentUser}
-            handleEditProfile={handleEditProfile}></ProtectedRoute>
+            handleEditProfile={handleEditProfile}
+            errorMessage={profileErrorMessage}></ProtectedRoute>
 
           <Route path='/signup'>
             {loggedIn ? (

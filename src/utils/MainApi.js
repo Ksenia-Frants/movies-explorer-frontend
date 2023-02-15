@@ -11,10 +11,10 @@ class Api {
     return Promise.reject(result);
   }
 
-  getUser() {
+  getUser(token) {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        authorization: `Bearer ${token}`,
       },
     }).then((res) => this._errorHandler(res));
   }

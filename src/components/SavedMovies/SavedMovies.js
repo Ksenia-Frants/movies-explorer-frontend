@@ -7,16 +7,11 @@ import { filterMovies, filterShortMovies } from '../../utils/utils';
 function SavedMovies({ handleMovieDelete, savedMoviesList }) {
   const [shortMovies, setShortMovies] = useState(false);
   const [showedMovies, setShowedMovies] = useState(savedMoviesList);
-  const [filteredMovies, setFilteredMovies] = useState(showedMovies);
-  const [noResults, setNoResults] = useState(false);
 
   function handleSearchSubmit(inputValue) {
-    if (filterMovies(savedMoviesList, inputValue, shortMovies).length === 0) {
-      setNoResults(true);
-    } else {
-      setNoResults(false);
-      setFilteredMovies(filterMovies(savedMoviesList, inputValue, shortMovies));
-      setShowedMovies(filterMovies(savedMoviesList, inputValue, shortMovies));
+    const filteredMovies = filterMovies(savedMoviesList, inputValue, shortMovies);
+    if (filteredMovies.length !== 0) {
+      setShowedMovies(filteredMovies);
     }
   }
 
@@ -28,7 +23,7 @@ function SavedMovies({ handleMovieDelete, savedMoviesList }) {
     } else {
       setShortMovies(true);
       localStorage.setItem('shortSavedMovies', true);
-      setShowedMovies(filterShortMovies(filteredMovies));
+      setShowedMovies(filterShortMovies(savedMoviesList));
     }
   }
 
@@ -52,9 +47,8 @@ function SavedMovies({ handleMovieDelete, savedMoviesList }) {
       <MoviesCardList
         moviesList={showedMovies}
         handleMovieDelete={handleMovieDelete}
-        savedMoviesList={savedMoviesList}
+        savedMoviesList={showedMovies}
         savedMoviesPage={true}
-        noResults={noResults}
       />
     </section>
   );

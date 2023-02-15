@@ -6,7 +6,6 @@ import Preloader from '../Preloader/Preloader';
 
 function MoviesCardList({
   isLoading,
-  noResults,
   moviesList,
   handleMovieSave,
   handleMovieDelete,
@@ -30,11 +29,9 @@ function MoviesCardList({
   }, [screenWidth, isMount]);
 
   useEffect(() => {
-    if (moviesList.length) {
-      const res = moviesList.filter((movie, i) => i < cardAmount.sum);
-      setShowMovies(res);
-    }
-  }, [moviesList, savedMoviesPage, cardAmount.sum]);
+    const res = moviesList.slice(0, cardAmount.sum);
+    setShowMovies(res);
+  }, [moviesList, cardAmount.sum]);
 
   function getSavedMovie(savedMoviesList, movie) {
     return savedMoviesList.find((savedMovie) => savedMovie.movieId === movie.id);
@@ -57,7 +54,7 @@ function MoviesCardList({
         <Preloader />
       ) : (
         <>
-          {noResults ? (
+          {!Boolean(showMovies.length) ? (
             <span className='movies__error'>Ничего не найдено</span>
           ) : (
             <>

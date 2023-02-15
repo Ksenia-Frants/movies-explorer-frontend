@@ -4,12 +4,13 @@ import './Profile.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
-function Profile({ handleSignOut, handleEditProfile, user }) {
+function Profile({ handleSignOut, handleEditProfile, user, errorMessage }) {
   const { values, handleChange, isValid, resetForm, setValues, errors } = useFormWithValidation();
   const [disabled, setDisabled] = useState(true);
   const [noNameChanges, setNoNameChanges] = useState(true);
   const [noEmailChanges, setNoEmailChanges] = useState(true);
   const currentUser = useContext(CurrentUserContext);
+  const [isNotifyVisible, setIsNotifyVisible] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -28,7 +29,8 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    handleEditProfile(values);
+    handleEditProfile(values, setIsNotifyVisible);
+
     setDisabled(true);
   }
 
@@ -60,7 +62,9 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
             placeholder='Имя'
             defaultValue={values.name || ''}
             onChange={checkNameChange}></input>
+          <span className='profile__input-error'>{errors.name || ''}</span>
         </fieldset>
+
         <fieldset className='profile__fieldset profile__fieldset_type_email'>
           <label className='profile__label' htmlFor='email'>
             E-mail
@@ -75,8 +79,18 @@ function Profile({ handleSignOut, handleEditProfile, user }) {
             placeholder='Почта'
             defaultValue={values.email || ''}
             onChange={checkEmailChange}></input>
+          <span className='profile__input-error'>{errors.email || ''}</span>
         </fieldset>
-        <span className='profile__error'>{errors.name}</span>
+
+        <span className={`profile__notify ${isNotifyVisible ? 'profile__notify_visible' : ''}`}>
+          Данные успешно обновлены
+        </span>
+        <span
+          className={
+            errorMessage.message ? 'profile__error profile__error_visible' : 'profile__error'
+          }>
+          {errorMessage.message}
+        </span>
         {disabled ? (
           <button
             className='profile__button profile__button_type_edit'

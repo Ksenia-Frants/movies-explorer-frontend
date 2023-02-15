@@ -10,7 +10,6 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
   const [shortMovies, setShortMovies] = useState(false);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [initialMovies, setInititalMovies] = useState([]);
-  const [noResults, setNoResults] = useState(false);
   const [areMoviesLoading, setAreMoviesLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -36,7 +35,6 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
 
   function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
     const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
-    moviesList.length === 0 ? setNoResults(true) : setNoResults(false);
     setInititalMovies(moviesList);
     setFilteredMovies(shortMoviesCheckbox ? filterShortMovies(moviesList) : moviesList);
     localStorage.setItem('movies', JSON.stringify(moviesList));
@@ -85,7 +83,6 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
         <>
           <MoviesCardList
             isLoading={areMoviesLoading}
-            noResults={noResults}
             moviesList={filteredMovies}
             handleMovieSave={handleMovieSave}
             handleMovieDelete={handleMovieDelete}

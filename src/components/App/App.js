@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
+import { Switch, Route, useHistory, Redirect, useLocation } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -28,21 +28,26 @@ function App() {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   useEffect(() => {
     const token = localStorage.getItem('jwt');
+    const pathname = location.pathname;
+
     if (token) {
       mainApi
         .getUser(token)
         .then((res) => {
           if (res) {
             setLoggedIn(true);
+            history.push(pathname);
           }
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [history]);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');

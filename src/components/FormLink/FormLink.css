@@ -1,0 +1,41 @@
+.form-link__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.form-link__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #a0a0a0;
+  margin-right: 6px;
+}
+
+.form-link__link {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #000000;
+  text-decoration: none;
+  transition: opacity 0.3s linear;
+}
+
+@media screen and (max-width: 630px) {
+  .form-link__container {
+    margin-top: 14px;
+  }
+
+  .form-link__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .form-link__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

@@ -5,7 +5,7 @@ import FormLink from '../FormLink/FormLink';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Preloader from '../Preloader/Preloader';
 
-function Register({ handleRegister, errorMessage, isLoading }) {
+function Register({ handleRegister, errorMessage, isLoading, isDisabledFormElement }) {
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   function handleSubmit(evt) {
@@ -15,7 +15,7 @@ function Register({ handleRegister, errorMessage, isLoading }) {
 
   useEffect(() => {
     resetForm();
-  }, [resetForm, handleRegister]);
+  }, [resetForm]);
 
   return (
     <section className='register'>
@@ -37,7 +37,8 @@ function Register({ handleRegister, errorMessage, isLoading }) {
                 minLength='2'
                 maxLength='40'
                 values={values.name || ''}
-                onChange={handleChange}></input>
+                onChange={handleChange}
+                disabled={isDisabledFormElement}></input>
               <span className='register__error'>{errors.name || ''}</span>
             </label>
             <label className='register__label'>
@@ -49,7 +50,8 @@ function Register({ handleRegister, errorMessage, isLoading }) {
                 placeholder='Почта'
                 required
                 value={values.email || ''}
-                onChange={handleChange}></input>
+                onChange={handleChange}
+                disabled={isDisabledFormElement}></input>
               <span className='register__error'>{errors.email || ''}</span>
             </label>
             <label className='register__label'>
@@ -72,7 +74,10 @@ function Register({ handleRegister, errorMessage, isLoading }) {
               }>
               {errorMessage.message}
             </span>
-            <button type='submit' className='register__button' disabled={!isValid}>
+            <button
+              type='submit'
+              className='register__button'
+              disabled={!isValid || isDisabledFormElement}>
               Зарегистрироваться
             </button>
           </form>

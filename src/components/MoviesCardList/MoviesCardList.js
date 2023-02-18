@@ -3,6 +3,7 @@ import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import useScreenWidth from '../../hooks/useScreenWidth';
 import Preloader from '../Preloader/Preloader';
+import { SCREEN_WIDTH_FEATURES } from '../../utils/constants';
 
 function MoviesCardList({
   isLoading,
@@ -11,22 +12,26 @@ function MoviesCardList({
   handleMovieDelete,
   savedMoviesList,
   savedMoviesPage,
+  noResults,
+  notFound,
 }) {
   const screenWidth = useScreenWidth();
   const [showMovies, setShowMovies] = useState([]);
   const [isMount, setIsMount] = useState(true);
   const [cardAmount, setCardAmount] = useState({ sum: 12, more: 3 });
 
+  const { desktop, tablet, mobile } = SCREEN_WIDTH_FEATURES;
+
   useEffect(() => {
-    if (screenWidth >= 1100) {
-      setCardAmount({ sum: 12, more: 3 });
-    } else if (screenWidth >= 705 && screenWidth < 1100) {
-      setCardAmount({ sum: 8, more: 2 });
+    if (screenWidth >= desktop.screen) {
+      setCardAmount(desktop.movies);
+    } else if (screenWidth >= tablet.screen.min && screenWidth < tablet.screen.max) {
+      setCardAmount(tablet.movies);
     } else {
-      setCardAmount({ sum: 5, more: 2 });
+      setCardAmount(mobile.movies);
     }
     return () => setIsMount(false);
-  }, [screenWidth, isMount]);
+  }, [screenWidth, isMount, desktop, tablet, mobile]);
 
   useEffect(() => {
     const res = moviesList.slice(0, cardAmount.sum);
@@ -54,7 +59,7 @@ function MoviesCardList({
         <Preloader />
       ) : (
         <>
-          {!Boolean(showMovies.length) ? (
+          {noResults || notFound ? (
             <span className='movies__error'>Ничего не найдено</span>
           ) : (
             <>

@@ -5,7 +5,7 @@ import Logo from '../Logo/Logo';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Preloader from '../Preloader/Preloader';
 
-function Login({ handleLogin, isLoading, errorMessage }) {
+function Login({ handleLogin, isLoading, errorMessage, isDisabledFormElement }) {
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   function handleSubmit(evt) {
@@ -31,7 +31,8 @@ function Login({ handleLogin, isLoading, errorMessage }) {
                 type='email'
                 required
                 value={values.email || ''}
-                onChange={handleChange}></input>
+                onChange={handleChange}
+                disabled={isDisabledFormElement}></input>
               <span className='login__error'>{errors.email || ''}</span>
             </label>
             <label className='login__label'>
@@ -44,7 +45,8 @@ function Login({ handleLogin, isLoading, errorMessage }) {
                 type='password'
                 required
                 value={values.password || ''}
-                onChange={handleChange}></input>
+                onChange={handleChange}
+                disabled={isDisabledFormElement}></input>
               <span className='login__error'>{errors.password || ''}</span>
             </label>
             <span
@@ -55,7 +57,10 @@ function Login({ handleLogin, isLoading, errorMessage }) {
               }>
               {errorMessage.message}
             </span>
-            <button type='submit' className='login__button' disabled={!isValid}>
+            <button
+              type='submit'
+              className='login__button'
+              disabled={!isValid || isDisabledFormElement}>
               Войти
             </button>
           </form>

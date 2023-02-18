@@ -7,11 +7,15 @@ import { filterMovies, filterShortMovies } from '../../utils/utils';
 function SavedMovies({ handleMovieDelete, savedMoviesList }) {
   const [shortMovies, setShortMovies] = useState(false);
   const [showedMovies, setShowedMovies] = useState(savedMoviesList);
+  const [noResults, setNoResults] = useState(false);
 
   function handleSearchSubmit(inputValue) {
     const filteredMovies = filterMovies(savedMoviesList, inputValue, shortMovies);
     if (filteredMovies.length !== 0) {
       setShowedMovies(filteredMovies);
+      setNoResults(false);
+    } else {
+      setNoResults(true);
     }
   }
 
@@ -49,6 +53,7 @@ function SavedMovies({ handleMovieDelete, savedMoviesList }) {
         handleMovieDelete={handleMovieDelete}
         savedMoviesList={showedMovies}
         savedMoviesPage={true}
+        noResults={noResults}
       />
     </section>
   );

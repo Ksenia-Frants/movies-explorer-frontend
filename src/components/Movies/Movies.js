@@ -12,6 +12,8 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
   const [initialMovies, setInititalMovies] = useState([]);
   const [areMoviesLoading, setAreMoviesLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [isServerMovies, setIsServerMovies] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('shortMovies') === 'true') {
@@ -35,26 +37,31 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
 
   function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
     const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
+    moviesList.length === 0 ? setNotFound(true) : setNotFound(false);
     setInititalMovies(moviesList);
     setFilteredMovies(shortMoviesCheckbox ? filterShortMovies(moviesList) : moviesList);
     localStorage.setItem('movies', JSON.stringify(moviesList));
   }
 
   function handleSearchMovieSubmit(inputValue) {
-    setAreMoviesLoading(true);
     localStorage.setItem('movieSearch', inputValue);
     localStorage.setItem('shortMovies', shortMovies);
-
-    moviesApi
-      .getMovies()
-      .then((data) => {
-        handleSetFilteredMovies(remakeMovieData(data), inputValue, shortMovies);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.log(err);
-      })
-      .finally(() => setAreMoviesLoading(false));
+    if (isServerMovies.length === 0) {
+      setAreMoviesLoading(true);
+      moviesApi
+        .getMovies()
+        .then((data) => {
+          setIsServerMovies(data);
+          handleSetFilteredMovies(remakeMovieData(data), inputValue, shortMovies);
+        })
+        .catch((err) => {
+          setIsError(true);
+          console.log(err);
+        })
+        .finally(() => setAreMoviesLoading(false));
+    } else {
+      handleSetFilteredMovies(isServerMovies, inputValue, shortMovies);
+    }
   }
 
   function toggleShortFilms() {
@@ -88,6 +95,7 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
             handleMovieDelete={handleMovieDelete}
             savedMoviesList={savedMoviesList}
             savedMoviesPage={savedMoviesPage}
+            notFound={notFound}
           />
         </>
       )}

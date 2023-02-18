@@ -23,6 +23,7 @@ function App() {
   const [loginErrorMessage, setLoginErrorMessage] = useState({});
   const [profileErrorMessage, setProfileErrorMessage] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [isDisabledFormElement, setIsDisabledFormElement] = useState(false);
 
   const footerEndpoints = ['/movies', '/saved-movies', '/'];
 
@@ -114,11 +115,13 @@ function App() {
       .then((res) => {
         if (res) {
           handleLogin({ email, password });
+          setIsDisabledFormElement(true);
         }
       })
       .catch((err) => {
         setRegisterErrorMessage(err);
         console.log(err);
+        setIsDisabledFormElement(false);
       })
       .finally(() => {
         setIsPageLoading(false);
@@ -150,6 +153,7 @@ function App() {
     localStorage.clear();
     setLoggedIn(false);
     history.push('/');
+    setIsDisabledFormElement(false);
   }
 
   function handleEditProfile(newProfile, setIsNotifyVisible) {
@@ -216,6 +220,7 @@ function App() {
                 handleRegister={handleRegister}
                 errorMessage={registerErrorMessage}
                 isLoading={isPageLoading}
+                isDisabledFormElement={isDisabledFormElement}
               />
             )}
           </Route>
@@ -227,6 +232,7 @@ function App() {
                 handleLogin={handleLogin}
                 isLoading={isPageLoading}
                 errorMessage={loginErrorMessage}
+                isDisabledFormElement={isDisabledFormElement}
               />
             )}
           </Route>

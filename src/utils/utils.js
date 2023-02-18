@@ -1,5 +1,7 @@
+import { SHORTFILM_DURATION } from './constants';
+
 export function filterShortMovies(movies) {
-  return movies.filter((movie) => movie.duration < 40);
+  return movies.filter((movie) => movie.duration < SHORTFILM_DURATION);
 }
 
 export function filterMovies(movies, userQuery, shortMoviesCheckbox) {

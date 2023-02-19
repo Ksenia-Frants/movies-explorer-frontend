@@ -7,19 +7,19 @@ import * as moviesApi from '../../utils/MoviesApi';
 import { remakeMovieData } from '../../utils/utils';
 
 function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMoviesPage }) {
-  const [shortMovies, setShortMovies] = useState(false);
+  const [isShortMoviesSelected, setIsShortMoviesSelected] = useState(false);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [initialMovies, setInititalMovies] = useState([]);
   const [areMoviesLoading, setAreMoviesLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [notFound, setNotFound] = useState(false);
-  const [isServerMovies, setIsServerMovies] = useState([]);
+  const [serverMovies, setServerMovies] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('shortMovies') === 'true') {
-      setShortMovies(true);
+      setIsShortMoviesSelected(true);
     } else {
-      setShortMovies(false);
+      setIsShortMoviesSelected(false);
     }
   }, []);
 
@@ -45,14 +45,14 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
 
   function handleSearchMovieSubmit(inputValue) {
     localStorage.setItem('movieSearch', inputValue);
-    localStorage.setItem('shortMovies', shortMovies);
-    if (isServerMovies.length === 0) {
+    localStorage.setItem('shortMovies', isShortMoviesSelected);
+    if (Boolean(!serverMovies.length)) {
       setAreMoviesLoading(true);
       moviesApi
         .getMovies()
         .then((data) => {
-          setIsServerMovies(data);
-          handleSetFilteredMovies(remakeMovieData(data), inputValue, shortMovies);
+          setServerMovies(data);
+          handleSetFilteredMovies(remakeMovieData(data), inputValue, isShortMoviesSelected);
         })
         .catch((err) => {
           setIsError(true);
@@ -60,18 +60,18 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
         })
         .finally(() => setAreMoviesLoading(false));
     } else {
-      handleSetFilteredMovies(isServerMovies, inputValue, shortMovies);
+      handleSetFilteredMovies(serverMovies, inputValue, isShortMoviesSelected);
     }
   }
 
   function toggleShortFilms() {
-    setShortMovies(!shortMovies);
-    if (!shortMovies) {
+    setIsShortMoviesSelected(!isShortMoviesSelected);
+    if (!isShortMoviesSelected) {
       setFilteredMovies(filterShortMovies(initialMovies));
     } else {
       setFilteredMovies(initialMovies);
     }
-    localStorage.setItem('shortMovies', !shortMovies);
+    localStorage.setItem('shortMovies', !isShortMoviesSelected);
   }
 
   return (
@@ -79,7 +79,7 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
       <SearchForm
         handleSearchSubmit={handleSearchMovieSubmit}
         toggleShortFilms={toggleShortFilms}
-        shortMovies={shortMovies}
+        shortMovies={isShortMoviesSelected}
       />
       {isError ? (
         <span className='movies__error'>
@@ -95,7 +95,7 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesList, savedMovi
             handleMovieDelete={handleMovieDelete}
             savedMoviesList={savedMoviesList}
             savedMoviesPage={savedMoviesPage}
-            notFound={notFound}
+            isMoviesFound={notFound}
           />
         </>
       )}

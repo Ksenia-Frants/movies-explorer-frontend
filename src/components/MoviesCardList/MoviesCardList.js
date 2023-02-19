@@ -12,8 +12,7 @@ function MoviesCardList({
   handleMovieDelete,
   savedMoviesList,
   savedMoviesPage,
-  noResults,
-  notFound,
+  isMoviesFound,
 }) {
   const screenWidth = useScreenWidth();
   const [showMovies, setShowMovies] = useState([]);
@@ -59,7 +58,7 @@ function MoviesCardList({
         <Preloader />
       ) : (
         <>
-          {noResults || notFound ? (
+          {isMoviesFound ? (
             <span className='movies__error'>Ничего не найдено</span>
           ) : (
             <>
@@ -79,9 +78,7 @@ function MoviesCardList({
                 <button className='movies-cards__button' onClick={handleMoreMovies}>
                   Ещё
                 </button>
-              ) : (
-                ''
-              )}
+              ) : null}
             </>
           )}
         </>

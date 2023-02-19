@@ -53,7 +53,7 @@ function SavedMovies({ handleMovieDelete, savedMoviesList }) {
         handleMovieDelete={handleMovieDelete}
         savedMoviesList={showedMovies}
         savedMoviesPage={true}
-        noResults={noResults}
+        isMoviesFound={noResults}
       />
     </section>
   );

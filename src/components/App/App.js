@@ -109,27 +109,28 @@ function App() {
   }
 
   function handleRegister({ name, email, password }) {
-    setIsPageLoading(true);
+    // setIsPageLoading(true);
+    setIsDisabledFormElement(true);
     mainApi
       .register(name, email, password)
       .then((res) => {
         if (res) {
           handleLogin({ email, password });
-          setIsDisabledFormElement(true);
         }
       })
       .catch((err) => {
         setRegisterErrorMessage(err);
         console.log(err);
-        setIsDisabledFormElement(false);
       })
       .finally(() => {
         setIsPageLoading(false);
+        setIsDisabledFormElement(false);
       });
   }
 
   function handleLogin({ email, password }) {
-    setIsPageLoading(true);
+    // setIsPageLoading(true);
+    setIsDisabledFormElement(true);
     mainApi
       .authorize(email, password)
       .then((res) => {
@@ -145,6 +146,7 @@ function App() {
       })
       .finally(() => {
         setIsPageLoading(false);
+        setIsDisabledFormElement(false);
       });
   }
 
@@ -153,7 +155,6 @@ function App() {
     localStorage.clear();
     setLoggedIn(false);
     history.push('/');
-    setIsDisabledFormElement(false);
   }
 
   function handleEditProfile(newProfile, setIsNotifyVisible) {

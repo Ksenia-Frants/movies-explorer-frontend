@@ -51,7 +51,8 @@ function Register({ handleRegister, errorMessage, isLoading, isDisabledFormEleme
                 required
                 value={values.email || ''}
                 onChange={handleChange}
-                disabled={isDisabledFormElement}></input>
+                disabled={isDisabledFormElement}
+              />
               <span className='register__error'>{errors.email || ''}</span>
             </label>
             <label className='register__label'>
@@ -63,7 +64,8 @@ function Register({ handleRegister, errorMessage, isLoading, isDisabledFormEleme
                 placeholder='Пароль'
                 required
                 value={values.password || ''}
-                onChange={handleChange}></input>
+                onChange={handleChange}
+              />
               <span className='register__error'>{errors.password || ''}</span>
             </label>
             <span

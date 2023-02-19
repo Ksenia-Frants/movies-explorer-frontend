@@ -109,7 +109,7 @@ function App() {
   }
 
   function handleRegister({ name, email, password }) {
-    // setIsPageLoading(true);
+    setIsPageLoading(true);
     setIsDisabledFormElement(true);
     mainApi
       .register(name, email, password)
@@ -129,7 +129,7 @@ function App() {
   }
 
   function handleLogin({ email, password }) {
-    // setIsPageLoading(true);
+    setIsPageLoading(true);
     setIsDisabledFormElement(true);
     mainApi
       .authorize(email, password)

@@ -60,7 +60,7 @@
 }
 
 .register__input[type='password'] {
-  margin-bottom: 10px;
+  margin-bottom: 79px;
 }
 
 .register__input:invalid {
@@ -88,8 +88,23 @@
   padding: 13px 0 15px;
   cursor: pointer;
   transition: opacity 0.3s linear;
-  margin-top: 69px;
   border: none;
+}
+
+.register__page-error {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #ff004c;
+  opacity: 0;
+  visibility: hidden;
+  margin-bottom: 20px;
+}
+
+.register__page-error_visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .register__button:hover {

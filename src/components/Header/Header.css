@@ -6,6 +6,51 @@
   margin: auto;
 }
 
+.header__auth-page {
+  display: none;
+}
+
+.header__auth-list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__link {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.3s linear;
+  color: #000000;
+}
+
+.header__link:hover {
+  opacity: 0.7;
+}
+
+.header__link_type_signin {
+  text-align: right;
+  margin-right: 30px;
+}
+
+.header__link_type_signup {
+  color: #ffffff;
+  background: #000000;
+  border-radius: 3px;
+  padding: 8px 20px;
+  transition: opacity 0.3s linear;
+}
+
+.header__link_type_signup:hover {
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 768px) {
   .header {
     padding: 18px 30px;
